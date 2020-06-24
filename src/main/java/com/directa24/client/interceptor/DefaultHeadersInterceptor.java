@@ -1,8 +1,6 @@
-package com.directa24.client;
+package com.directa24.client.interceptor;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -19,12 +17,10 @@ public class DefaultHeadersInterceptor implements Interceptor {
    public Response intercept(Interceptor.Chain chain) throws IOException {
 
       Request originalRequest = chain.request();
-      Request requestWithHeaders = originalRequest
-            .newBuilder()
-            .header("Content-Type", "application/json")
-            .header("X-Date", LocalDateTime.now(ZoneOffset.UTC).toString())
-            .header("X-Login", login)
-            .build();
+      Request requestWithHeaders = originalRequest.newBuilder() //
+                                                  .header("Content-Type", "application/json") //
+                                                  .header("X-Login", login) //
+                                                  .build();
 
       return chain.proceed(requestWithHeaders);
    }
