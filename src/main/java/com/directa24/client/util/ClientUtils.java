@@ -19,23 +19,29 @@ public class ClientUtils {
 
    public static final String D24_AUTHORIZATION_SCHEME = "D24 ";
 
+   public static final String BEARER_AUTHORIZATION_SCHEME = "Bearer ";
+
    private static final String HMAC_SHA256 = "HmacSHA256";
 
    private static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-   public static String buildSignature(String key, String date, String login, String payload) throws Directa24Exception {
+   public static String buildDepositKeySignature(String secretKey, String date, String depositKey, String payload) throws Directa24Exception {
       byte[] hmacSha256 = null;
       try {
          Mac mac = Mac.getInstance(HMAC_SHA256);
-         SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), HMAC_SHA256);
+         SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), HMAC_SHA256);
          mac.init(secretKeySpec);
-         hmacSha256 = mac.doFinal(buildByteArray(date, login, payload));
+         hmacSha256 = mac.doFinal(buildByteArray(date, depositKey, payload));
       } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
          throw new Directa24Exception(e);
       }
       return D24_AUTHORIZATION_SCHEME + toHexString(hmacSha256);
+   }
+
+   public static String buildApiKeySignature(String apiKey) {
+      return BEARER_AUTHORIZATION_SCHEME + apiKey;
    }
 
    public static String now() {

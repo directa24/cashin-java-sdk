@@ -12,11 +12,11 @@ import lombok.Data;
 @Data
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class DepositStatusRequest implements Serializable {
+public class PaymentMethodRequest implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
    @JsonProperty
-   private Integer id;
+   private String country;
 
 }

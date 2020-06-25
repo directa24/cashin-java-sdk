@@ -8,10 +8,10 @@ import okhttp3.Response;
 
 public class DefaultHeadersInterceptor implements Interceptor {
 
-   private String login;
+   private String depositKey;
 
-   public DefaultHeadersInterceptor(String login) {
-      this.login = login;
+   public DefaultHeadersInterceptor(String depositKey) {
+      this.depositKey = depositKey;
    }
 
    public Response intercept(Interceptor.Chain chain) throws IOException {
@@ -19,7 +19,7 @@ public class DefaultHeadersInterceptor implements Interceptor {
       Request originalRequest = chain.request();
       Request requestWithHeaders = originalRequest.newBuilder() //
                                                   .header("Content-Type", "application/json") //
-                                                  .header("X-Login", login) //
+                                                  .header("X-Login", depositKey) //
                                                   .build();
 
       return chain.proceed(requestWithHeaders);

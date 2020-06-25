@@ -22,11 +22,6 @@
     </licenses>
 
     <properties>
-        <!-- RPM plugin configuration -->
-<!--        <rpm.env>prd</rpm.env>-->
-<!--        <rpm.username>spring</rpm.username>-->
-<!--        <rpm.groupname>root</rpm.groupname>-->
-
         <!-- JVM configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
@@ -40,6 +35,10 @@
         <lombok.version>1.18.12</lombok.version>
         <jackson.version>2.11.0</jackson.version>
         <okhttp.version>4.7.2</okhttp.version>
+
+        <!-- Test dependencies -->
+        <junit.version>4.13</junit.version>
+        <wiremock.version>2.26.3</wiremock.version>
     </properties>
 
     <dependencyManagement>
@@ -65,6 +64,18 @@
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-jre8</artifactId>
+                <version>${wiremock.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -84,6 +95,14 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
         </dependency>
     </dependencies>
 
@@ -172,5 +191,5 @@
             <layout>default</layout>
         </snapshotRepository>
     </distributionManagement>
-    
+
 </project>

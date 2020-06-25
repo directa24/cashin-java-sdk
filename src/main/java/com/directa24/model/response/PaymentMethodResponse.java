@@ -1,7 +1,6 @@
 package com.directa24.model.response;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -11,32 +10,32 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class DepositStatusResponse implements Serializable {
+public class PaymentMethodResponse implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
    @JsonProperty
-   private String userId;
+   private String country;
 
    @JsonProperty
-   private Integer depositId;
+   private String code;
 
    @JsonProperty
-   private String invoiceId;
+   private String name;
 
    @JsonProperty
-   private String currency;
-
-   @JsonProperty
-   private BigDecimal amount;
-
-   @JsonProperty
-   private BigDecimal bonusAmount;
-
-   @JsonProperty
-   private String paymentType;
+   private String type;
 
    @JsonProperty
    private String status;
+
+   @JsonProperty
+   private String logo;
+
+   @JsonProperty
+   private Integer dailyAverage;
+
+   @JsonProperty
+   private Integer monthlyAverage;
 
 }
