@@ -8,7 +8,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -54,8 +53,8 @@ public class CreateDepositTest extends AbstractDirecta24Test {
       Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
 
       Address address = Address.builder() //
-                               .street("Calle 13") //
-                               .city("Montevideo") //
+                               .street("Rua Dr. Franco Ribeiro, 52") //
+                               .city("Rio Branco") //
                                .state("AC") //
                                .zipCode("11600-234") //
                                .build();
@@ -101,10 +100,10 @@ public class CreateDepositTest extends AbstractDirecta24Test {
             .clientIp("186.51.171.84")
             .language("es")
             .deviceId("00000000-00000000-01234567-89ABCDEF")
-            .backUrl("")
-            .successUrl("")
-            .errorUrl("")
-            .notificationUrl("")
+            .backUrl("https://yoursite.com/deposit/108/cancel")
+            .successUrl("https://yoursite.com/deposit/108/confirm")
+            .errorUrl("https://yoursite.com/deposit/108/error")
+            .notificationUrl("https://yoursite.com/ipn")
             .logo("")
             .test(true)
             .mobile(false)
@@ -114,7 +113,6 @@ public class CreateDepositTest extends AbstractDirecta24Test {
       CreateDepositResponse createDepositResponse = directa24Test.client.createDeposit(createDepositRequest);
 
       assertTrue(createDepositResponse != null);
-      assertEquals(createDepositResponse.getDepositId(), new Integer(999));
 
       verify(postRequestedFor(urlEqualTo("/v3/deposit/")).withHeader("Content-Type", equalTo("application/json")));
    }

@@ -24,7 +24,7 @@ public class Directa24 {
        * @param secretKey
        */
       public Sandbox(String depositKey, String apiKey, String secretKey) {
-         super(depositKey, apiKey, secretKey, "http://127.0.0.1:8080");
+         super(depositKey, apiKey, secretKey, "https://api-stg.directa24.com");
       }
 
       /**
@@ -37,7 +37,7 @@ public class Directa24 {
        * @param readTimeout
        */
       public Sandbox(String depositKey, String apiKey, String secretKey, int connectTimeout, int readTimeout) {
-         super(depositKey, apiKey, secretKey, "http://127.0.0.1:8080", connectTimeout, readTimeout);
+         super(depositKey, apiKey, secretKey, "https://api-stg.directa24.com", connectTimeout, readTimeout);
       }
    }
 

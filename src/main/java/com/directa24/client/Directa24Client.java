@@ -9,9 +9,11 @@ import com.directa24.client.interceptor.DefaultHeadersInterceptor;
 import com.directa24.client.util.ClientUtils;
 import com.directa24.exception.Directa24Exception;
 import com.directa24.model.request.CreateDepositRequest;
+import com.directa24.model.request.CurrencyExchangeRequest;
 import com.directa24.model.request.DepositStatusRequest;
 import com.directa24.model.request.PaymentMethodRequest;
 import com.directa24.model.response.CreateDepositResponse;
+import com.directa24.model.response.CurrencyExchangeResponse;
 import com.directa24.model.response.DepositStatusResponse;
 import com.directa24.model.response.PaymentMethodResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +31,8 @@ public class Directa24Client {
    private static final String DEPOSIT_V3_PATH = "/v3/deposit/";
 
    private static final String PAYMENT_METHODS_V3_PATH = "/v3/payment_methods";
+
+   private static final String CURRENCY_EXCHANGE_V3_PATH = "/v3/currency_exchange";
 
    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -157,6 +161,36 @@ public class Directa24Client {
             if (response.isSuccessful()) {
                List<PaymentMethodResponse> paymentMethodResponse = OBJECT_MAPPER.readValue(responseBody, List.class);
                return paymentMethodResponse;
+            } else {
+               throw new Directa24Exception(responseBody);
+            }
+         }
+      } catch (IOException e) {
+         throw new Directa24Exception(e);
+      }
+   }
+
+   public CurrencyExchangeResponse currencyExchange(CurrencyExchangeRequest currencyExchangeRequest) throws Directa24Exception {
+      try {
+         String date = ClientUtils.now();
+         HttpUrl.Builder httpBuilder = HttpUrl.parse(baseUrl + CURRENCY_EXCHANGE_V3_PATH).newBuilder();
+         if (currencyExchangeRequest.getCountry() != null) {
+            httpBuilder.addQueryParameter("country", currencyExchangeRequest.getCountry());
+         }
+         if (currencyExchangeRequest.getAmount() != null) {
+            httpBuilder.addQueryParameter("amount", currencyExchangeRequest.getAmount().toString());
+         }
+         Request request = new Request.Builder()
+               .url(httpBuilder.build())
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildApiKeySignature(apiKey))
+               .build();
+
+         try (Response response = okHttpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               CurrencyExchangeResponse currencyExchangeResponse = OBJECT_MAPPER.readValue(responseBody, CurrencyExchangeResponse.class);
+               return currencyExchangeResponse;
             } else {
                throw new Directa24Exception(responseBody);
             }

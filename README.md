@@ -1,5 +1,6 @@
 # Directa 24 Java client library
 
+
 The official [Directa 24][directa24] Java client library.
 
 ## Installation
@@ -54,8 +55,8 @@ public class CreateDepositExample {
    public static void main(String[] args) {
 
       Address address = Address.builder() //
-                               .street("Calle 13") //
-                               .city("Montevideo") //
+                               .street("Rua Dr. Franco Ribeiro, 52") //
+                               .city("Rio Branco") //
                                .state("AC") //
                                .zipCode("11600-234") //
                                .build();
@@ -101,10 +102,10 @@ public class CreateDepositExample {
             .clientIp("186.51.171.84")
             .language("es")
             .deviceId("00000000-00000000-01234567-89ABCDEF")
-            .backUrl("")
-            .successUrl("")
-            .errorUrl("")
-            .notificationUrl("")
+            .backUrl("https://yoursite.com/deposit/108/cancel")
+            .successUrl("https://yoursite.com/deposit/108/confirm")
+            .errorUrl("https://yoursite.com/deposit/108/error")
+            .notificationUrl("https://yoursite.com/ipn")
             .logo("")
             .test(true)
             .mobile(false)
@@ -113,8 +114,11 @@ public class CreateDepositExample {
 
       try {
          CreateDepositResponse createDepositResponse = directa24Sandbox.client.createDeposit(createDepositRequest);
+         
+         // Handle response
+
       } catch (Directa24Exception e) {
-         // Manage errors
+         // Handle errors
       }
    }
 }
@@ -128,8 +132,11 @@ public class DepositStatusExample {
       DepositStatusRequest depositStatusRequest = DepositStatusRequest.builder().id(300000001).build();
       try {
          DepositStatusResponse depositStatusResponse = directa24Sandbox.client.depositStatus(depositStatusRequest);
+      
+         // Handle response
+
       } catch (Directa24Exception e) {
-         // Manage errors
+         // Handle errors
       }
    }
 }
@@ -144,8 +151,33 @@ public class PaymentMethodsExample {
       PaymentMethodRequest paymentMethodRequest = PaymentMethodRequest.builder().country("BR").build();
       try {
          List<PaymentMethodResponse> paymentMethodResponse = directa24Sandbox.client.paymentMethods(paymentMethodRequest);
+      
+         // Handle response
+
       } catch (Directa24Exception e) {
-         // Manage errors
+         // Handle errors
+      }
+   }
+}
+```
+
+#### Currency Exchange
+
+```java
+public class CurrencyExchangeExample {
+
+   public static void main(String[] args) {
+      CurrencyExchangeRequest currencyExchangeRequest = CurrencyExchangeRequest.builder() //
+                                                                               .country("BR") //
+                                                                               .amount(BigDecimal.TEN) //
+                                                                               .build();
+      try {
+         CurrencyExchangeResponse currencyExchangeResponse = directa24Test.client.currencyExchange(currencyExchangeRequest);
+         
+         // Handle response
+
+      } catch (Directa24Exception e) {
+         // Handle errors
       }
    }
 }
@@ -161,7 +193,7 @@ facilitate development.
 [JUnit 4][junit] and [Wiremock][wiremock] library are needed to run the bundled tests.
 
 [directa24]: https://directa24.com
-[api-docs]: https://directa24.com
+[api-docs]: https://docs.directa24.com/deposits-api
 [lombok]: https://projectlombok.org
 [lombok-plugins]: https://projectlombok.org/setup/overview
 [junit]: https://junit.org/junit4/
