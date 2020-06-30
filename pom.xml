@@ -7,12 +7,11 @@
     <groupId>com.directa24</groupId>
     <artifactId>cashin-java-sdk</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <packaging>jar</packaging>
 
     <name>Directa 24 SDK</name>
     <description>Directa 24 SDK</description>
-    <url>https://github.com/directa24/directa24-java-sdk</url>
+    <url>https://directa24.com</url>
 
     <licenses>
         <license>
@@ -21,18 +20,33 @@
         </license>
     </licenses>
 
-    <properties>
-        <!-- RPM plugin configuration -->
-<!--        <rpm.env>prd</rpm.env>-->
-<!--        <rpm.username>spring</rpm.username>-->
-<!--        <rpm.groupname>root</rpm.groupname>-->
+    <developers>
+        <developer>
+            <name>Diego Agriel</name>
+            <email>diego.agriel@directa24.com</email>
+            <organization>Directa 24</organization>
+            <organizationUrl>https://directa24.com</organizationUrl>
+        </developer>
+    </developers>
 
+    <scm>
+        <connection>scm:git:git://github.com/directa24/cashin-java-sdk.git</connection>
+        <developerConnection>scm:git:ssh://github.com:directa24/cashin-java-sdk.git</developerConnection>
+        <url>http://github.com/directa24/cashin-java-sdk/tree/master</url>
+    </scm>
+
+    <properties>
         <!-- JVM configuration -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 
         <!-- Third party dependencies -->
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+
         <lombok-maven-plugin.version>1.18.12.0</lombok-maven-plugin.version>
         <spotbugs-maven-plugin.version>4.0.0</spotbugs-maven-plugin.version>
         <checkstyle-maven-plugin.version>3.1.1</checkstyle-maven-plugin.version>
@@ -40,6 +54,10 @@
         <lombok.version>1.18.12</lombok.version>
         <jackson.version>2.11.0</jackson.version>
         <okhttp.version>4.7.2</okhttp.version>
+
+        <!-- Test dependencies -->
+        <junit.version>4.13</junit.version>
+        <wiremock.version>2.26.3</wiremock.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +78,23 @@
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-jre8</artifactId>
+                <version>${wiremock.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -73,13 +108,91 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+        </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven-gpg-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
@@ -148,20 +261,4 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>maven-releases</id>
-            <name>maven-releases</name>
-            <url>https://nexus-dev.directa24.com/repository/maven-releases/</url>
-            <layout>default</layout>
-        </repository>
-        <snapshotRepository>
-            <id>maven-snapshots</id>
-            <name>maven-snapshots</name>
-            <url>https://nexus-dev.directa24.com/repository/maven-snapshots/</url>
-            <uniqueVersion>true</uniqueVersion>
-            <layout>default</layout>
-        </snapshotRepository>
-    </distributionManagement>
-    
 </project>

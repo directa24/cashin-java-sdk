@@ -1,75 +1,205 @@
 package com.directa24.client;
 
 import java.io.IOException;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import com.directa24.client.interceptor.DefaultHeadersInterceptor;
+import com.directa24.client.util.ClientUtils;
 import com.directa24.exception.Directa24Exception;
-import com.directa24.model.deposit.create.CreateDepositRequest;
-import com.directa24.model.deposit.create.CreateDepositResponse;
-import com.directa24.model.deposit.status.DepositStatusRequest;
-import com.directa24.model.deposit.status.DepositStatusResponse;
+import com.directa24.model.request.CreateDepositRequest;
+import com.directa24.model.request.CurrencyExchangeRequest;
+import com.directa24.model.request.DepositStatusRequest;
+import com.directa24.model.request.PaymentMethodRequest;
+import com.directa24.model.response.CreateDepositResponse;
+import com.directa24.model.response.CurrencyExchangeResponse;
+import com.directa24.model.response.DepositStatusResponse;
+import com.directa24.model.response.PaymentMethodResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import lombok.Data;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@Data
 public class Directa24Client {
 
+   private static final String DEPOSIT_V3_PATH = "/v3/deposit/";
+
+   private static final String PAYMENT_METHODS_V3_PATH = "/v3/payment_methods";
+
+   private static final String CURRENCY_EXCHANGE_V3_PATH = "/v3/currency_exchange";
+
+   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
+
    private static final int DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
+
    private static final int DEFAULT_READ_TIMEOUT = 30 * 1000;
 
-   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+   private String depositKey;
 
-   private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
-   private int readTimeout = DEFAULT_READ_TIMEOUT;
+   private String apiKey;
 
-   private String login;
    private String secretKey;
 
    private String baseUrl;
 
-   private String webUrl;
-
    private OkHttpClient okHttpClient;
 
-   public Directa24Client(String login, String secretKey, String baseUrl, String webUrl) {
-      this.login = login;
+   public Directa24Client(String depositKey, String apiKey, String secretKey, String baseUrl) {
+      this(depositKey, apiKey, secretKey, baseUrl, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
+   }
+
+   public Directa24Client(String depositKey, String apiKey, String secretKey, String baseUrl, int connectTimeout, int readTimeout) {
+      this.depositKey = depositKey;
+      this.apiKey = apiKey;
       this.secretKey = secretKey;
       this.baseUrl = baseUrl;
-      this.webUrl = webUrl;
 
       okHttpClient = new OkHttpClient.Builder()
-            .addInterceptor(new DefaultHeadersInterceptor(login))
+            .addInterceptor(new DefaultHeadersInterceptor(depositKey))
+            .connectTimeout(connectTimeout, TimeUnit.SECONDS)
+            .readTimeout(readTimeout, TimeUnit.SECONDS)
             .build();
    }
 
+   /**
+    * Creates a deposit.
+    *
+    * @param createDepositRequest Request object
+    * @return CreateDepositResponse object
+    * @throws Directa24Exception if underlying service fails
+    */
    public CreateDepositResponse createDeposit(CreateDepositRequest createDepositRequest) throws Directa24Exception {
-      return null;
-   }
-
-   public DepositStatusResponse depositStatus(DepositStatusRequest depositStatusRequest) throws Directa24Exception {
       try {
-         Request request = new Request.Builder()
-                                      .url(baseUrl + "/v3/deposit/" + depositStatusRequest.getId())
-                                      .header("Authorization", SignatureUtil.hmacSha256(secretKey, depositStatusRequest))
-                                      .build();
+         String bodyString = OBJECT_MAPPER.writeValueAsString(createDepositRequest);
+         RequestBody body = RequestBody.create(bodyString.getBytes(StandardCharsets.UTF_8), MediaType.get("application/json"));
+
+         String date = ClientUtils.now();
+         Request.Builder requestBuilder = new Request.Builder()
+               .url(baseUrl + DEPOSIT_V3_PATH)
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, bodyString))
+               .post(body);
+
+         if (createDepositRequest.getIdempotency() != null && !createDepositRequest.getIdempotency().isEmpty()) {
+            requestBuilder.header("X-Idempotency-Key", createDepositRequest.getIdempotency());
+         }
+
+         Request request = requestBuilder.build();
 
          try (Response response = okHttpClient.newCall(request).execute()) {
-            if (response != null) {
-               String responseBody = response.body().string();
-               Map<String, String> responseBodyMap = OBJECT_MAPPER.readValue(responseBody, Map.class);
-
-               if (responseBodyMap.get("code") != null) {
-                  throw new Directa24Exception(responseBody);
-               } else {
-                  DepositStatusResponse depositStatusResponse = OBJECT_MAPPER.readValue(responseBody, DepositStatusResponse.class);
-                  return depositStatusResponse;
-               }
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               CreateDepositResponse createDepositResponse = OBJECT_MAPPER.readValue(responseBody, CreateDepositResponse.class);
+               return createDepositResponse;
             } else {
-               throw new Directa24Exception("Empty response");
+               throw new Directa24Exception(responseBody);
+            }
+         }
+      } catch (IOException e) {
+         throw new Directa24Exception(e);
+      }
+   }
+
+   /**
+    * Returns a deposit status.
+    *
+    * @param depositStatusRequest Request object
+    * @return DepositStatusResponse object
+    * @throws Directa24Exception if underlying service fails
+    */
+   public DepositStatusResponse depositStatus(DepositStatusRequest depositStatusRequest) throws Directa24Exception {
+      try {
+         String date = ClientUtils.now();
+         Request request = new Request.Builder()
+               .url(baseUrl + DEPOSIT_V3_PATH + depositStatusRequest.getId())
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, null))
+               .build();
+
+         try (Response response = okHttpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               DepositStatusResponse depositStatusResponse = OBJECT_MAPPER.readValue(responseBody, DepositStatusResponse.class);
+               return depositStatusResponse;
+            } else {
+               throw new Directa24Exception(responseBody);
+            }
+         }
+      } catch (IOException e) {
+         throw new Directa24Exception(e);
+      }
+   }
+
+   /**
+    * Returns payment methods.
+    *
+    * @param paymentMethodRequest Request object
+    * @return Payment methods list
+    * @throws Directa24Exception if underlying service fails
+    */
+   public List<PaymentMethodResponse> paymentMethods(PaymentMethodRequest paymentMethodRequest) throws Directa24Exception {
+      try {
+         String date = ClientUtils.now();
+         HttpUrl.Builder httpBuilder = HttpUrl.parse(baseUrl + PAYMENT_METHODS_V3_PATH).newBuilder();
+         if (paymentMethodRequest.getCountry() != null) {
+            httpBuilder.addQueryParameter("country", paymentMethodRequest.getCountry());
+         }
+         Request request = new Request.Builder()
+               .url(httpBuilder.build())
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildApiKeySignature(apiKey))
+               .build();
+
+         try (Response response = okHttpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               List<PaymentMethodResponse> paymentMethodResponse = OBJECT_MAPPER.readValue(responseBody, List.class);
+               return paymentMethodResponse;
+            } else {
+               throw new Directa24Exception(responseBody);
+            }
+         }
+      } catch (IOException e) {
+         throw new Directa24Exception(e);
+      }
+   }
+
+   /**
+    * Currency exchange.
+    *
+    * @param currencyExchangeRequest Request object
+    * @return CurrencyExchangeResponse object
+    * @throws Directa24Exception if underlying service fails
+    */
+   public CurrencyExchangeResponse currencyExchange(CurrencyExchangeRequest currencyExchangeRequest) throws Directa24Exception {
+      try {
+         String date = ClientUtils.now();
+         HttpUrl.Builder httpBuilder = HttpUrl.parse(baseUrl + CURRENCY_EXCHANGE_V3_PATH).newBuilder();
+         if (currencyExchangeRequest.getCountry() != null) {
+            httpBuilder.addQueryParameter("country", currencyExchangeRequest.getCountry());
+         }
+         if (currencyExchangeRequest.getAmount() != null) {
+            httpBuilder.addQueryParameter("amount", currencyExchangeRequest.getAmount().toString());
+         }
+         Request request = new Request.Builder()
+               .url(httpBuilder.build())
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildApiKeySignature(apiKey))
+               .build();
+
+         try (Response response = okHttpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               CurrencyExchangeResponse currencyExchangeResponse = OBJECT_MAPPER.readValue(responseBody, CurrencyExchangeResponse.class);
+               return currencyExchangeResponse;
+            } else {
+               throw new Directa24Exception(responseBody);
             }
          }
       } catch (IOException e) {

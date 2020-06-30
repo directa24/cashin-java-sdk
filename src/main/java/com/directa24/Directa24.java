@@ -6,30 +6,81 @@ public class Directa24 {
 
    public Directa24Client client;
 
-   public Directa24(String login, String secretKey, String baseUrl, String webUrl) {
-      client = new Directa24Client(login, secretKey, baseUrl, webUrl);
+   public Directa24(String depositKey, String apiKey, String secretKey, String baseUrl) {
+      client = new Directa24Client(depositKey, apiKey, secretKey, baseUrl);
+   }
+
+   public Directa24(String depositKey, String apiKey, String secretKey, String baseUrl, int connectTimeout, int readTimeout) {
+      client = new Directa24Client(depositKey, apiKey, secretKey, baseUrl, connectTimeout, readTimeout);
    }
 
    public static class Sandbox extends Directa24 {
-      public Sandbox(String login, String secretKey) {
-         super(login, secretKey, "http://127.0.0.1:8080", "https://www.sandbox.directa24.com");
+
+      /**
+       * Create a client for Sandbox environment.
+       *
+       * @param depositKey Directa 24's deposit key
+       * @param apiKey     Directa 24's API key
+       * @param secretKey  Directa 24's secret key
+       */
+      public Sandbox(String depositKey, String apiKey, String secretKey) {
+         super(depositKey, apiKey, secretKey, "https://api-stg.directa24.com");
+      }
+
+      /**
+       * Create a client for Sandbox environment with custom connect timeout and read timeout.
+       *
+       * @param depositKey     Directa 24's deposit key
+       * @param apiKey         Directa 24's API key
+       * @param secretKey      Directa 24's secret key
+       * @param connectTimeout Connect timeout in milliseconds
+       * @param readTimeout    Read timeout in milliseconds
+       */
+      public Sandbox(String depositKey, String apiKey, String secretKey, int connectTimeout, int readTimeout) {
+         super(depositKey, apiKey, secretKey, "https://api-stg.directa24.com", connectTimeout, readTimeout);
       }
    }
 
    public static class Production extends Directa24 {
-      public Production(String login, String secretKey) {
-         super(login, secretKey, "https://api.directa24.com", "https://www.directa24.com");
+
+      /**
+       * Create a client for Production environment.
+       *
+       * @param depositKey Directa 24's deposit key
+       * @param apiKey     Directa 24's API key
+       * @param secretKey  Directa 24's secret key
+       */
+      public Production(String depositKey, String apiKey, String secretKey) {
+         super(depositKey, apiKey, secretKey, "https://api.directa24.com");
+      }
+
+      /**
+       * Create a client for Production environment with custom connect timeout and read timeout.
+       *
+       * @param depositKey     Directa 24's deposit key
+       * @param apiKey         Directa 24's API key
+       * @param secretKey      Directa 24's secret key
+       * @param connectTimeout Connect timeout in milliseconds
+       * @param readTimeout    Read timeout in milliseconds
+       */
+      public Production(String depositKey, String apiKey, String secretKey, int connectTimeout, int readTimeout) {
+         super(depositKey, apiKey, secretKey, "https://api.directa24.com", connectTimeout, readTimeout);
       }
    }
 
-   public Directa24 connectTimeout(int connectTimeout) {
-      client.setConnectTimeout(connectTimeout);
-      return this;
-   }
+   public static class Test extends Directa24 {
 
-   public Directa24 readTimeout(int readTimeout) {
-      client.setReadTimeout(readTimeout);
-      return this;
+      /**
+       * Create a client for Test environment.
+       *
+       * @param depositKey Directa 24's deposit key
+       * @param apiKey     Directa 24's API key
+       * @param secretKey  Directa 24's secret key
+       */
+      public Test(String depositKey, String apiKey, String secretKey) {
+         super(depositKey, apiKey, secretKey, "http://localhost:8089");
+      }
+
    }
 
 }
