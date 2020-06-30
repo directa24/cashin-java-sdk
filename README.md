@@ -54,11 +54,11 @@ public class CreateDepositExample {
 
    public static void main(String[] args) {
 
-      Address address = Address.builder() //
-                               .street("Rua Dr. Franco Ribeiro, 52") //
-                               .city("Rio Branco") //
-                               .state("AC") //
-                               .zipCode("11600-234") //
+      Address address = Address.builder()
+                               .street("Rua Dr. Franco Ribeiro, 52")
+                               .city("Rio Branco")
+                               .state("AC")
+                               .zipCode("11600-234")
                                .build();
 
       Payer payer = Payer
@@ -129,7 +129,10 @@ public class CreateDepositExample {
 public class DepositStatusExample {
 
    public static void main(String[] args) {
-      DepositStatusRequest depositStatusRequest = DepositStatusRequest.builder().id(300000001).build();
+      DepositStatusRequest depositStatusRequest = DepositStatusRequest
+                                                  .builder()
+                                                  .id(300000001)
+                                                  .build();
       try {
          DepositStatusResponse depositStatusResponse = directa24Sandbox.client.depositStatus(depositStatusRequest);
       
@@ -148,7 +151,10 @@ public class DepositStatusExample {
 public class PaymentMethodsExample {
 
    public static void main(String[] args) {
-      PaymentMethodRequest paymentMethodRequest = PaymentMethodRequest.builder().country("BR").build();
+      PaymentMethodRequest paymentMethodRequest = PaymentMethodRequest
+                                                  .builder()
+                                                  .country("BR")
+                                                  .build();
       try {
          List<PaymentMethodResponse> paymentMethodResponse = directa24Sandbox.client.paymentMethods(paymentMethodRequest);
       
@@ -167,9 +173,9 @@ public class PaymentMethodsExample {
 public class CurrencyExchangeExample {
 
    public static void main(String[] args) {
-      CurrencyExchangeRequest currencyExchangeRequest = CurrencyExchangeRequest.builder() //
-                                                                               .country("BR") //
-                                                                               .amount(BigDecimal.TEN) //
+      CurrencyExchangeRequest currencyExchangeRequest = CurrencyExchangeRequest.builder()
+                                                                               .country("BR")
+                                                                               .amount(BigDecimal.TEN)
                                                                                .build();
       try {
          CurrencyExchangeResponse currencyExchangeResponse = directa24Test.client.currencyExchange(currencyExchangeRequest);

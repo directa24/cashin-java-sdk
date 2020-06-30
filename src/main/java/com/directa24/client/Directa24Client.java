@@ -68,11 +68,11 @@ public class Directa24Client {
    }
 
    /**
-    * Create a deposit.
+    * Creates a deposit.
     *
-    * @param createDepositRequest
-    * @return CreateDepositResponse
-    * @throws Directa24Exception
+    * @param createDepositRequest Request object
+    * @return CreateDepositResponse object
+    * @throws Directa24Exception if underlying service fails
     */
    public CreateDepositResponse createDeposit(CreateDepositRequest createDepositRequest) throws Directa24Exception {
       try {
@@ -107,11 +107,11 @@ public class Directa24Client {
    }
 
    /**
-    * Return a deposit status.
+    * Returns a deposit status.
     *
-    * @param depositStatusRequest
-    * @return DepositStatusResponse
-    * @throws Directa24Exception
+    * @param depositStatusRequest Request object
+    * @return DepositStatusResponse object
+    * @throws Directa24Exception if underlying service fails
     */
    public DepositStatusResponse depositStatus(DepositStatusRequest depositStatusRequest) throws Directa24Exception {
       try {
@@ -137,11 +137,11 @@ public class Directa24Client {
    }
 
    /**
-    * Return payment methods.
+    * Returns payment methods.
     *
-    * @param paymentMethodRequest
-    * @return List<PaymentMethodResponse>
-    * @throws Directa24Exception
+    * @param paymentMethodRequest Request object
+    * @return Payment methods list
+    * @throws Directa24Exception if underlying service fails
     */
    public List<PaymentMethodResponse> paymentMethods(PaymentMethodRequest paymentMethodRequest) throws Directa24Exception {
       try {
@@ -170,6 +170,13 @@ public class Directa24Client {
       }
    }
 
+   /**
+    * Currency exchange.
+    *
+    * @param currencyExchangeRequest Request object
+    * @return CurrencyExchangeResponse object
+    * @throws Directa24Exception if underlying service fails
+    */
    public CurrencyExchangeResponse currencyExchange(CurrencyExchangeRequest currencyExchangeRequest) throws Directa24Exception {
       try {
          String date = ClientUtils.now();
