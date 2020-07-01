@@ -31,7 +31,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/directa24/cashin-java-sdk.git</connection>
-        <developerConnection>scm:git:ssh://github.com:directa24/cashin-java-sdk.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com/directa24/cashin-java-sdk.git</developerConnection>
         <url>http://github.com/directa24/cashin-java-sdk/tree/master</url>
     </scm>
 
