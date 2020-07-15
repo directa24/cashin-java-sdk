@@ -28,7 +28,7 @@ public class CreateDepositTest extends AbstractDirecta24Test {
    @Before
    public void createMocks() {
 
-      stubFor(post(urlMatching("/v3/deposit/"))
+      stubFor(post(urlMatching("/v3/deposits/"))
             .withHeader("X-Login", equalTo(DEPOSIT_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse()
@@ -114,7 +114,7 @@ public class CreateDepositTest extends AbstractDirecta24Test {
 
       assertTrue(createDepositResponse != null);
 
-      verify(postRequestedFor(urlEqualTo("/v3/deposit/")).withHeader("Content-Type", equalTo("application/json")));
+      verify(postRequestedFor(urlEqualTo("/v3/deposits/")).withHeader("Content-Type", equalTo("application/json")));
    }
 
 }

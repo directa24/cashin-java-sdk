@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class CurrencyExchangeRequest implements Serializable {
+public class ExchangeRateRequest implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
