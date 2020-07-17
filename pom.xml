@@ -6,7 +6,7 @@
 
     <groupId>com.directa24</groupId>
     <artifactId>cashin-java-sdk</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Directa 24 SDK</name>
