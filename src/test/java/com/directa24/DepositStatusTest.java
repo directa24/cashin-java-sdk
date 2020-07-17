@@ -25,7 +25,7 @@ public class DepositStatusTest extends AbstractDirecta24Test {
    @Before
    public void createMocks() {
 
-      stubFor(get(urlMatching("/v3/deposit/123456"))
+      stubFor(get(urlMatching("/v3/deposits/123456"))
             .withHeader("X-Login", equalTo(DEPOSIT_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse()
@@ -35,7 +35,7 @@ public class DepositStatusTest extends AbstractDirecta24Test {
                         + "\"invoice_id\": \"4-3368819155598657863\",\"currency\": \"USD\",\"amount\": 100.00,"
                         + "\"payment_type\": \"BANK_TRANSFER\",\"status\": \"PENDING\"}")));
 
-      stubFor(get(urlMatching("/v3/deposit/999999"))
+      stubFor(get(urlMatching("/v3/deposits/999999"))
             .withHeader("X-Login", equalTo(DEPOSIT_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse().withStatus(404).withHeader("Content-Type", "application/json")));
@@ -55,7 +55,7 @@ public class DepositStatusTest extends AbstractDirecta24Test {
       assertTrue(depositStatusResponse != null);
       assertEquals(depositStatusResponse.getStatus(), "PENDING");
 
-      verify(getRequestedFor(urlEqualTo("/v3/deposit/" + 123456)).withHeader("Content-Type", equalTo("application/json")));
+      verify(getRequestedFor(urlEqualTo("/v3/deposits/" + 123456)).withHeader("Content-Type", equalTo("application/json")));
    }
 
    @Test

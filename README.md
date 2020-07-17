@@ -25,7 +25,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.directa24</groupId>
   <artifactId>cashin-java-sdk</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
@@ -167,18 +167,18 @@ public class PaymentMethodsExample {
 }
 ```
 
-#### Currency Exchange
+#### Exchange rates
 
 ```java
-public class CurrencyExchangeExample {
+public class ExchangeRateExample {
 
    public static void main(String[] args) {
-      CurrencyExchangeRequest currencyExchangeRequest = CurrencyExchangeRequest.builder()
+      ExchangeRateRequest exchangeRatesRequest = ExchangeRateRequest.builder()
                                                                                .country("BR")
                                                                                .amount(BigDecimal.TEN)
                                                                                .build();
       try {
-         CurrencyExchangeResponse currencyExchangeResponse = directa24Test.client.currencyExchange(currencyExchangeRequest);
+         ExchangeRateResponse exchangeRateResponse = directa24Test.client.exchangeRates(exchangeRateRequest);
          
          // Handle response
 

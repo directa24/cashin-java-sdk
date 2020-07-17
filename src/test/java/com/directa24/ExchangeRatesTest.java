@@ -16,14 +16,14 @@ import org.junit.Test;
 
 import com.directa24.base.AbstractDirecta24Test;
 import com.directa24.exception.Directa24Exception;
-import com.directa24.model.request.CurrencyExchangeRequest;
-import com.directa24.model.response.CurrencyExchangeResponse;
+import com.directa24.model.request.ExchangeRateRequest;
+import com.directa24.model.response.ExchangeRateResponse;
 
-public class CurrencyExchangeTest extends AbstractDirecta24Test {
+public class ExchangeRatesTest extends AbstractDirecta24Test {
 
    @Before
    public void createMocks() {
-      stubFor(get(urlEqualTo("/v3/currency_exchange?country=BR"))
+      stubFor(get(urlEqualTo("/v3/exchange_rates?country=BR"))
             .withHeader("X-Login", equalTo(DEPOSIT_KEY))
             .withHeader("Authorization", equalTo("Bearer " + API_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
@@ -32,7 +32,7 @@ public class CurrencyExchangeTest extends AbstractDirecta24Test {
                   .withHeader("Content-Type", "application/json")
                   .withBody("{\"fx_rate\":5.4272,\"currency\":\"BRL\",\"converted_amount\":5.4272}")));
 
-      stubFor(get(urlEqualTo("/v3/currency_exchange?country=BR&amount=10"))
+      stubFor(get(urlEqualTo("/v3/exchange_rates?country=BR&amount=10"))
             .withHeader("X-Login", equalTo(DEPOSIT_KEY))
             .withHeader("Authorization", equalTo("Bearer " + API_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
@@ -43,36 +43,36 @@ public class CurrencyExchangeTest extends AbstractDirecta24Test {
    }
 
    @Test
-   public void currencyExchangeBRTest() throws Directa24Exception {
+   public void exchangeRatesBRTest() throws Directa24Exception {
 
       Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
 
-      CurrencyExchangeRequest currencyExchangeRequest = CurrencyExchangeRequest.builder() //
-                                                                               .country("BR") //
-                                                                               .build();
+      ExchangeRateRequest exchangeRatesRequest = ExchangeRateRequest.builder() //
+                                                                    .country("BR") //
+                                                                    .build();
 
-      CurrencyExchangeResponse currencyExchangeResponse = directa24Test.client.currencyExchange(currencyExchangeRequest);
+      ExchangeRateResponse exchangeRateResponse = directa24Test.client.exchangeRates(exchangeRatesRequest);
 
-      assertTrue(currencyExchangeResponse != null);
+      assertTrue(exchangeRateResponse != null);
 
-      verify(getRequestedFor(urlEqualTo("/v3/currency_exchange?country=BR")).withHeader("Content-Type", equalTo("application/json")));
+      verify(getRequestedFor(urlEqualTo("/v3/exchange_rates?country=BR")).withHeader("Content-Type", equalTo("application/json")));
    }
 
    @Test
-   public void currencyExchangeAmountBRTest() throws Directa24Exception {
+   public void exchangeRatesAmountBRTest() throws Directa24Exception {
 
       Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
 
-      CurrencyExchangeRequest currencyExchangeRequest = CurrencyExchangeRequest.builder() //
-                                                                               .country("BR") //
-                                                                               .amount(BigDecimal.TEN) //
-                                                                               .build();
+      ExchangeRateRequest exchangeRatesRequest = ExchangeRateRequest.builder() //
+                                                                    .country("BR") //
+                                                                    .amount(BigDecimal.TEN) //
+                                                                    .build();
 
-      CurrencyExchangeResponse currencyExchangeResponse = directa24Test.client.currencyExchange(currencyExchangeRequest);
+      ExchangeRateResponse exchangeRateResponse = directa24Test.client.exchangeRates(exchangeRatesRequest);
 
-      assertTrue(currencyExchangeResponse != null);
+      assertTrue(exchangeRateResponse != null);
 
-      verify(getRequestedFor(urlEqualTo("/v3/currency_exchange?country=BR&amount=10")).withHeader("Content-Type", equalTo("application/json")));
+      verify(getRequestedFor(urlEqualTo("/v3/exchange_rates?country=BR&amount=10")).withHeader("Content-Type", equalTo("application/json")));
    }
 
 }

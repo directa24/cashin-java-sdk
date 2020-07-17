@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class CurrencyExchangeResponse implements Serializable {
+public class ExchangeRateResponse implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
