@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.3 - 2020-07-27
+## 1.0.4 - 2020-07-27
 * Ignore unrecognized fields on deserialization
 * Add iframe field to create deposit response
 
