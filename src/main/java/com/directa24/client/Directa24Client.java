@@ -16,6 +16,7 @@ import com.directa24.model.response.CreateDepositResponse;
 import com.directa24.model.response.DepositStatusResponse;
 import com.directa24.model.response.ExchangeRateResponse;
 import com.directa24.model.response.PaymentMethodResponse;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -34,7 +35,9 @@ public class Directa24Client {
 
    private static final String EXCHANGE_RATE_V3_PATH = "/v3/exchange_rates";
 
-   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().registerModule(new JavaTimeModule());
+   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+         .registerModule(new JavaTimeModule())
+         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
    private static final int DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
 

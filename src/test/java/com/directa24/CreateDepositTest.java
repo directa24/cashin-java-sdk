@@ -34,7 +34,7 @@ public class CreateDepositTest extends AbstractDirecta24Test {
             .willReturn(aResponse()
                   .withStatus(200)
                   .withHeader("Content-Type", "application/json")
-                  .withBody("{\"checkout_type\": \"ONE_SHOT\","
+                  .withBody("{\"checkout_type\": \"ONE_SHOT\",\"iframe\": false,"
                         + "\"redirect_url\": \"https://checkout.astropay.com/v1/gateway/show?id_payment=169123506&signature=4ca838f2e6bbc8dce150\","
                         + "\"deposit_id\": 999,\"user_id\": \"4-9934519\"," + "\"merchant_invoice_id\": \"postmanTest395373786\",\"payment_info\": {"
                         + "\"type\": \"BANK_TRANSFER\",\"payment_method\": \"BB\","

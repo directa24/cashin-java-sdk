@@ -22,6 +22,9 @@ public class CreateDepositResponse implements Serializable {
    private String redirectUrl;
 
    @JsonProperty
+   private Boolean iframe;
+
+   @JsonProperty
    private Integer depositId;
 
    @JsonProperty

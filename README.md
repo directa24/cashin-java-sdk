@@ -14,7 +14,7 @@ The official [Directa 24][directa24] Java client library.
 Add this dependency to your project's build file:
 
 ```groovy
-implementation "com.directa24:cashin-java-sdk:1.0.1"
+implementation "com.directa24:cashin-java-sdk:1.0.3"
 ```
 
 ### Maven users
@@ -25,7 +25,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.directa24</groupId>
   <artifactId>cashin-java-sdk</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 
@@ -173,10 +173,11 @@ public class PaymentMethodsExample {
 public class ExchangeRateExample {
 
    public static void main(String[] args) {
-      ExchangeRateRequest exchangeRatesRequest = ExchangeRateRequest.builder()
-                                                                               .country("BR")
-                                                                               .amount(BigDecimal.TEN)
-                                                                               .build();
+      ExchangeRateRequest exchangeRatesRequest = ExchangeRateRequest
+                                                 .builder()
+                                                 .country("BR")
+                                                 .amount(BigDecimal.TEN)
+                                                 .build();
       try {
          ExchangeRateResponse exchangeRateResponse = directa24Test.client.exchangeRates(exchangeRateRequest);
          

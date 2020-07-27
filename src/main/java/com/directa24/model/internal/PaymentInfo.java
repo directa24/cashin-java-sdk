@@ -32,11 +32,9 @@ public class PaymentInfo implements Serializable {
    @JsonProperty
    private String currency;
 
-   // @JsonProperty
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_CUSTOM_PATTERN)
    private LocalDateTime expirationDate;
 
-   // @JsonProperty
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_CUSTOM_PATTERN)
    private LocalDateTime createdAt;
 
