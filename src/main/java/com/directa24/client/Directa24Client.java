@@ -29,7 +29,7 @@ import okhttp3.Response;
 
 public class Directa24Client {
 
-   private static final String DEPOSITS_V3_PATH = "/v3/deposits/";
+   private static final String DEPOSITS_V3_PATH = "/v3/deposits";
 
    private static final String PAYMENT_METHODS_V3_PATH = "/v3/payment_methods";
 
@@ -120,7 +120,7 @@ public class Directa24Client {
       try {
          String date = ClientUtils.now();
          Request request = new Request.Builder()
-               .url(baseUrl + DEPOSITS_V3_PATH + depositStatusRequest.getId())
+               .url(baseUrl + DEPOSITS_V3_PATH + "/" + depositStatusRequest.getId())
                .header("X-Date", date)
                .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, null))
                .build();

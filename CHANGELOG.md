@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7 - 2020-08-10
+* Remove ending "/" from create deposits path
+* Various dependencies versions update
+
 ## 1.0.4 - 2020-07-27
 * Ignore unrecognized fields on deserialization
 * Add iframe field to create deposit response
