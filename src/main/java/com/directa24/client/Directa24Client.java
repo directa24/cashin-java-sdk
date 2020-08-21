@@ -8,10 +8,12 @@ import java.util.concurrent.TimeUnit;
 import com.directa24.client.interceptor.DefaultHeadersInterceptor;
 import com.directa24.client.util.ClientUtils;
 import com.directa24.exception.Directa24Exception;
+import com.directa24.model.request.BankDataRequest;
 import com.directa24.model.request.CreateDepositRequest;
 import com.directa24.model.request.DepositStatusRequest;
 import com.directa24.model.request.ExchangeRateRequest;
 import com.directa24.model.request.PaymentMethodRequest;
+import com.directa24.model.response.BankDataResponse;
 import com.directa24.model.response.CreateDepositResponse;
 import com.directa24.model.response.DepositStatusResponse;
 import com.directa24.model.response.ExchangeRateResponse;
@@ -34,6 +36,10 @@ public class Directa24Client {
    private static final String PAYMENT_METHODS_V3_PATH = "/v3/payment_methods";
 
    private static final String EXCHANGE_RATE_V3_PATH = "/v3/exchange_rates";
+
+   private static final String REFUNDS_V3_PATH = "/v3/refunds";
+
+   private static final String BANKS_V3_PATH = "/v3/banks";
 
    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
          .registerModule(new JavaTimeModule())
@@ -201,6 +207,41 @@ public class Directa24Client {
             if (response.isSuccessful()) {
                ExchangeRateResponse exchangeRateResponse = OBJECT_MAPPER.readValue(responseBody, ExchangeRateResponse.class);
                return exchangeRateResponse;
+            } else {
+               throw new Directa24Exception(responseBody);
+            }
+         }
+      } catch (IOException e) {
+         throw new Directa24Exception(e);
+      }
+   }
+
+   /**
+    * Returns a list of available banks.
+    *
+    * @param bankDataRequest Request object
+    * @return List<BankDataResponse> Banks information
+    * @throws Directa24Exception if underlying service fails
+    */
+   public List<BankDataResponse> getBanks(BankDataRequest bankDataRequest) throws Directa24Exception {
+      try {
+         String date = ClientUtils.now();
+
+         HttpUrl.Builder httpBuilder = HttpUrl.parse(baseUrl + BANKS_V3_PATH).newBuilder();
+         if (bankDataRequest.getCountry() != null) {
+            httpBuilder.addQueryParameter("country", bankDataRequest.getCountry());
+         }
+         Request request = new Request.Builder()
+               .url(httpBuilder.build())
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildApiKeySignature(apiKey))
+               .build();
+
+         try (Response response = okHttpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               List<BankDataResponse> bankDataResponses = OBJECT_MAPPER.readValue(responseBody, List.class);
+               return bankDataResponses;
             } else {
                throw new Directa24Exception(responseBody);
             }
