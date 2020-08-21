@@ -10,11 +10,13 @@ import com.directa24.client.util.ClientUtils;
 import com.directa24.exception.Directa24Exception;
 import com.directa24.model.request.BankDataRequest;
 import com.directa24.model.request.CreateDepositRequest;
+import com.directa24.model.request.CreateRefundRequest;
 import com.directa24.model.request.DepositStatusRequest;
 import com.directa24.model.request.ExchangeRateRequest;
 import com.directa24.model.request.PaymentMethodRequest;
 import com.directa24.model.response.BankDataResponse;
 import com.directa24.model.response.CreateDepositResponse;
+import com.directa24.model.response.CreateRefundResponse;
 import com.directa24.model.response.DepositStatusResponse;
 import com.directa24.model.response.ExchangeRateResponse;
 import com.directa24.model.response.PaymentMethodResponse;
@@ -242,6 +244,45 @@ public class Directa24Client {
             if (response.isSuccessful()) {
                List<BankDataResponse> bankDataResponses = OBJECT_MAPPER.readValue(responseBody, List.class);
                return bankDataResponses;
+            } else {
+               throw new Directa24Exception(responseBody);
+            }
+         }
+      } catch (IOException e) {
+         throw new Directa24Exception(e);
+      }
+   }
+
+   /**
+    * Creates a refund.
+    *
+    * @param createRefundRequest Request object
+    * @return CreateRefundResponse object
+    * @throws Directa24Exception if underlying service fails
+    */
+   public CreateRefundResponse createRefund(CreateRefundRequest createRefundRequest) throws Directa24Exception {
+      try {
+         String bodyString = OBJECT_MAPPER.writeValueAsString(createRefundRequest);
+         RequestBody body = RequestBody.create(bodyString.getBytes(StandardCharsets.UTF_8), MediaType.get("application/json"));
+
+         String date = ClientUtils.now();
+         Request.Builder requestBuilder = new Request.Builder()
+               .url(baseUrl + REFUNDS_V3_PATH)
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, bodyString))
+               .post(body);
+
+         if (createRefundRequest.getIdempotency() != null && !createRefundRequest.getIdempotency().isEmpty()) {
+            requestBuilder.header("X-Idempotency-Key", createRefundRequest.getIdempotency());
+         }
+
+         Request request = requestBuilder.build();
+
+         try (Response response = okHttpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               CreateRefundResponse createRefundResponse = OBJECT_MAPPER.readValue(responseBody, CreateRefundResponse.class);
+               return createRefundResponse;
             } else {
                throw new Directa24Exception(responseBody);
             }
