@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.8 - 2020-08-21
+* Create refund and refund status services
+* Banks service
+
 ## 1.0.7 - 2020-08-10
 * Remove ending "/" from create deposits path
 * Various dependencies versions update

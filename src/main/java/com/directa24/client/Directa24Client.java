@@ -14,12 +14,14 @@ import com.directa24.model.request.CreateRefundRequest;
 import com.directa24.model.request.DepositStatusRequest;
 import com.directa24.model.request.ExchangeRateRequest;
 import com.directa24.model.request.PaymentMethodRequest;
+import com.directa24.model.request.RefundStatusRequest;
 import com.directa24.model.response.BankDataResponse;
 import com.directa24.model.response.CreateDepositResponse;
 import com.directa24.model.response.CreateRefundResponse;
 import com.directa24.model.response.DepositStatusResponse;
 import com.directa24.model.response.ExchangeRateResponse;
 import com.directa24.model.response.PaymentMethodResponse;
+import com.directa24.model.response.RefundStatusResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -222,7 +224,7 @@ public class Directa24Client {
     * Returns a list of available banks.
     *
     * @param bankDataRequest Request object
-    * @return List<BankDataResponse> Banks information
+    * @return Banks information list
     * @throws Directa24Exception if underlying service fails
     */
    public List<BankDataResponse> getBanks(BankDataRequest bankDataRequest) throws Directa24Exception {
@@ -283,6 +285,36 @@ public class Directa24Client {
             if (response.isSuccessful()) {
                CreateRefundResponse createRefundResponse = OBJECT_MAPPER.readValue(responseBody, CreateRefundResponse.class);
                return createRefundResponse;
+            } else {
+               throw new Directa24Exception(responseBody);
+            }
+         }
+      } catch (IOException e) {
+         throw new Directa24Exception(e);
+      }
+   }
+
+   /**
+    * Returns a refund status.
+    *
+    * @param refundStatusRequest Request object
+    * @return RefundStatusResponse object
+    * @throws Directa24Exception if underlying service fails
+    */
+   public RefundStatusResponse refundStatus(RefundStatusRequest refundStatusRequest) throws Directa24Exception {
+      try {
+         String date = ClientUtils.now();
+         Request request = new Request.Builder()
+               .url(baseUrl + REFUNDS_V3_PATH + "/" + refundStatusRequest.getId())
+               .header("X-Date", date)
+               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, null))
+               .build();
+
+         try (Response response = okHttpClient.newCall(request).execute()) {
+            String responseBody = response.body().string();
+            if (response.isSuccessful()) {
+               RefundStatusResponse refundStatusResponse = OBJECT_MAPPER.readValue(responseBody, RefundStatusResponse.class);
+               return refundStatusResponse;
             } else {
                throw new Directa24Exception(responseBody);
             }

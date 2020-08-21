@@ -37,6 +37,12 @@ public class CreateRefundRequest implements Serializable {
    @JsonProperty
    private String notificationUrl;
 
+   @JsonProperty
+   private String country;
+
+   @JsonProperty
+   private String origin;
+
    @JsonIgnore
    private String idempotency;
 
