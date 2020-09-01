@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.9 - 2020-09-01
+* Remove unused fields on refund creation service
+
 ## 1.0.8 - 2020-08-21
 * Create refund and refund status services
 * Banks service
