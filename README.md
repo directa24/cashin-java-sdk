@@ -14,7 +14,7 @@ The official [Directa 24][directa24] Java client library.
 Add this dependency to your project's build file:
 
 ```groovy
-implementation "com.directa24:cashin-java-sdk:1.0.10"
+implementation "com.directa24:cashin-java-sdk:1.0.11"
 ```
 
 ### Maven users
@@ -25,7 +25,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.directa24</groupId>
   <artifactId>cashin-java-sdk</artifactId>
-  <version>1.0.10</version>
+  <version>1.0.11</version>
 </dependency>
 ```
 

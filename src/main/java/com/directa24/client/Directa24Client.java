@@ -23,6 +23,7 @@ import com.directa24.model.response.DepositStatusResponse;
 import com.directa24.model.response.ExchangeRateResponse;
 import com.directa24.model.response.PaymentMethodResponse;
 import com.directa24.model.response.RefundStatusResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -187,7 +188,10 @@ public class Directa24Client {
          try (Response response = okHttpClient.newCall(request).execute()) {
             String responseBody = response.body().string();
             if (response.isSuccessful()) {
-               List<PaymentMethodResponse> paymentMethodResponse = OBJECT_MAPPER.readValue(responseBody, List.class);
+               List<PaymentMethodResponse> paymentMethodResponse = OBJECT_MAPPER.readValue(responseBody,
+                     new TypeReference<List<PaymentMethodResponse>>() {
+
+                     });
                return paymentMethodResponse;
             } else {
                throw new Directa24Exception(responseBody);
@@ -259,7 +263,9 @@ public class Directa24Client {
          try (Response response = okHttpClient.newCall(request).execute()) {
             String responseBody = response.body().string();
             if (response.isSuccessful()) {
-               List<BankDataResponse> bankDataResponses = OBJECT_MAPPER.readValue(responseBody, List.class);
+               List<BankDataResponse> bankDataResponses = OBJECT_MAPPER.readValue(responseBody, new TypeReference<List<BankDataResponse>>() {
+
+               });
                return bankDataResponses;
             } else {
                throw new Directa24Exception(responseBody);

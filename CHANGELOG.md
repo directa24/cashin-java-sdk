@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.11 - 2020-09-04
+* Minor fixes
+
 ## 1.0.10 - 2020-09-04
 * Support for read only key
 * Remove api key
