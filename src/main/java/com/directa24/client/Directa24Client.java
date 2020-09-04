@@ -5,7 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.directa24.client.interceptor.DefaultHeadersInterceptor;
+import com.directa24.client.interceptor.DepositHeadersInterceptor;
+import com.directa24.client.interceptor.ReadOnlyHeadersInterceptor;
 import com.directa24.client.util.ClientUtils;
 import com.directa24.exception.Directa24Exception;
 import com.directa24.model.request.BankDataRequest;
@@ -55,26 +56,40 @@ public class Directa24Client {
 
    private String depositKey;
 
-   private String apiKey;
-
    private String secretKey;
+
+   private String readOnlyKey;
 
    private String baseUrl;
 
    private OkHttpClient okHttpClient;
 
-   public Directa24Client(String depositKey, String apiKey, String secretKey, String baseUrl) {
-      this(depositKey, apiKey, secretKey, baseUrl, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
+   public Directa24Client(String readOnlyKey, String baseUrl) {
+      this(readOnlyKey, baseUrl, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
    }
 
-   public Directa24Client(String depositKey, String apiKey, String secretKey, String baseUrl, int connectTimeout, int readTimeout) {
+   public Directa24Client(String readOnlyKey, String baseUrl, int connectTimeout, int readTimeout) {
+      this.readOnlyKey = readOnlyKey;
+      this.baseUrl = baseUrl;
+
+      okHttpClient = new OkHttpClient.Builder()
+            .addInterceptor(new ReadOnlyHeadersInterceptor())
+            .connectTimeout(connectTimeout, TimeUnit.SECONDS)
+            .readTimeout(readTimeout, TimeUnit.SECONDS)
+            .build();
+   }
+
+   public Directa24Client(String depositKey, String secretKey, String baseUrl) {
+      this(depositKey, secretKey, baseUrl, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
+   }
+
+   public Directa24Client(String depositKey, String secretKey, String baseUrl, int connectTimeout, int readTimeout) {
       this.depositKey = depositKey;
-      this.apiKey = apiKey;
       this.secretKey = secretKey;
       this.baseUrl = baseUrl;
 
       okHttpClient = new OkHttpClient.Builder()
-            .addInterceptor(new DefaultHeadersInterceptor(depositKey))
+            .addInterceptor(new DepositHeadersInterceptor(depositKey))
             .connectTimeout(connectTimeout, TimeUnit.SECONDS)
             .readTimeout(readTimeout, TimeUnit.SECONDS)
             .build();
@@ -96,7 +111,7 @@ public class Directa24Client {
          Request.Builder requestBuilder = new Request.Builder()
                .url(baseUrl + DEPOSITS_V3_PATH)
                .header("X-Date", date)
-               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, bodyString))
+               .header("Authorization", ClientUtils.buildDepositSignature(secretKey, date, depositKey, bodyString))
                .post(body);
 
          if (createDepositRequest.getIdempotency() != null && !createDepositRequest.getIdempotency().isEmpty()) {
@@ -132,7 +147,7 @@ public class Directa24Client {
          Request request = new Request.Builder()
                .url(baseUrl + DEPOSITS_V3_PATH + "/" + depositStatusRequest.getId())
                .header("X-Date", date)
-               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, null))
+               .header("Authorization", ClientUtils.buildDepositSignature(secretKey, date, depositKey, null))
                .build();
 
          try (Response response = okHttpClient.newCall(request).execute()) {
@@ -166,7 +181,7 @@ public class Directa24Client {
          Request request = new Request.Builder()
                .url(httpBuilder.build())
                .header("X-Date", date)
-               .header("Authorization", ClientUtils.buildApiKeySignature(apiKey))
+               .header("Authorization", ClientUtils.buildReadOnlySignature(readOnlyKey))
                .build();
 
          try (Response response = okHttpClient.newCall(request).execute()) {
@@ -203,7 +218,7 @@ public class Directa24Client {
          Request request = new Request.Builder()
                .url(httpBuilder.build())
                .header("X-Date", date)
-               .header("Authorization", ClientUtils.buildApiKeySignature(apiKey))
+               .header("Authorization", ClientUtils.buildReadOnlySignature(readOnlyKey))
                .build();
 
          try (Response response = okHttpClient.newCall(request).execute()) {
@@ -238,7 +253,7 @@ public class Directa24Client {
          Request request = new Request.Builder()
                .url(httpBuilder.build())
                .header("X-Date", date)
-               .header("Authorization", ClientUtils.buildApiKeySignature(apiKey))
+               .header("Authorization", ClientUtils.buildReadOnlySignature(readOnlyKey))
                .build();
 
          try (Response response = okHttpClient.newCall(request).execute()) {
@@ -271,7 +286,7 @@ public class Directa24Client {
          Request.Builder requestBuilder = new Request.Builder()
                .url(baseUrl + REFUNDS_V3_PATH)
                .header("X-Date", date)
-               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, bodyString))
+               .header("Authorization", ClientUtils.buildDepositSignature(secretKey, date, depositKey, bodyString))
                .post(body);
 
          if (createRefundRequest.getIdempotency() != null && !createRefundRequest.getIdempotency().isEmpty()) {
@@ -307,7 +322,7 @@ public class Directa24Client {
          Request request = new Request.Builder()
                .url(baseUrl + REFUNDS_V3_PATH + "/" + refundStatusRequest.getId())
                .header("X-Date", date)
-               .header("Authorization", ClientUtils.buildDepositKeySignature(secretKey, date, depositKey, null))
+               .header("Authorization", ClientUtils.buildDepositSignature(secretKey, date, depositKey, null))
                .build();
 
          try (Response response = okHttpClient.newCall(request).execute()) {

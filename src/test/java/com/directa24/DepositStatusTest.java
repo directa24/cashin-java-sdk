@@ -44,7 +44,7 @@ public class DepositStatusTest extends AbstractDirecta24Test {
    @Test
    public void depositStatusTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, SECRET_KEY);
 
       DepositStatusRequest depositStatusRequest = DepositStatusRequest.builder() //
                                                                       .id(123456) //
@@ -61,7 +61,7 @@ public class DepositStatusTest extends AbstractDirecta24Test {
    @Test
    public void depositNotFoundTest() {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, SECRET_KEY);
 
       DepositStatusRequest depositStatusRequest = DepositStatusRequest.builder() //
                                                                       .id(999999) //

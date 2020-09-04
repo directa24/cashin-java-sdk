@@ -50,7 +50,7 @@ public class CreateDepositTest extends AbstractDirecta24Test {
    @Test
    public void createDepositTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, SECRET_KEY);
 
       Address address = Address.builder() //
                                .street("Rua Dr. Franco Ribeiro, 52") //
@@ -104,7 +104,7 @@ public class CreateDepositTest extends AbstractDirecta24Test {
             .successUrl("https://yoursite.com/deposit/108/confirm")
             .errorUrl("https://yoursite.com/deposit/108/error")
             .notificationUrl("https://yoursite.com/ipn")
-            .logo("")
+            .logo("https://yoursite.com/logo.png")
             .test(true)
             .mobile(false)
             .idempotency("")

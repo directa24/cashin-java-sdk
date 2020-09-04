@@ -24,8 +24,7 @@ public class BanksDataTest extends AbstractDirecta24Test {
    @Before
    public void createMocks() {
       stubFor(get(urlEqualTo("/v3/banks?country=BR"))
-            .withHeader("X-Login", equalTo(DEPOSIT_KEY))
-            .withHeader("Authorization", equalTo("Bearer " + API_KEY))
+            .withHeader("Authorization", equalTo("Bearer " + READ_ONLY_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse()
                   .withStatus(200)
@@ -34,8 +33,7 @@ public class BanksDataTest extends AbstractDirecta24Test {
                         + "{\"code\": 4,\"name\": \"BANCO DO NORDESTE DO BRASIL S.A.\"}]")));
 
       stubFor(get(urlEqualTo("/v3/banks?country=AR"))
-            .withHeader("X-Login", equalTo(DEPOSIT_KEY))
-            .withHeader("Authorization", equalTo("Bearer " + API_KEY))
+            .withHeader("Authorization", equalTo("Bearer " + READ_ONLY_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody("[]")));
    }
@@ -43,7 +41,7 @@ public class BanksDataTest extends AbstractDirecta24Test {
    @Test
    public void banksBRTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(READ_ONLY_KEY);
 
       BankDataRequest bankDataRequest = BankDataRequest.builder() //
                                                        .country("BR") //
@@ -59,7 +57,7 @@ public class BanksDataTest extends AbstractDirecta24Test {
    @Test
    public void emptyBanksTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(READ_ONLY_KEY);
 
       BankDataRequest bankDataRequest = BankDataRequest.builder() //
                                                        .country("AR") //

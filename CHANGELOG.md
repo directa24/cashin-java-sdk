@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.10 - 2020-09-04
+* Support for read only key
+* Remove api key
+
 ## 1.0.9 - 2020-09-01
 * Remove unused fields on refund creation service
 

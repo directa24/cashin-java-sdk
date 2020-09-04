@@ -43,7 +43,7 @@ public class RefundStatusTest extends AbstractDirecta24Test {
    @Test
    public void refundStatusTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, SECRET_KEY);
 
       RefundStatusRequest refundStatusRequest = RefundStatusRequest.builder() //
                                                                    .id(123456) //
@@ -60,7 +60,7 @@ public class RefundStatusTest extends AbstractDirecta24Test {
    @Test
    public void refundNotFoundTest() {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, SECRET_KEY);
 
       RefundStatusRequest refundStatusRequest = RefundStatusRequest.builder() //
                                                                    .id(999999) //

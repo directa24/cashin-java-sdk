@@ -27,9 +27,12 @@ public class ClientUtils {
 
    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-   public static String buildDepositKeySignature(String secretKey, String date, String depositKey, String payload) throws Directa24Exception {
+   public static String buildDepositSignature(String secretKey, String date, String depositKey, String payload) throws Directa24Exception {
       byte[] hmacSha256 = null;
       try {
+         if (secretKey == null || depositKey == null) {
+            throw new Directa24Exception("Missing credentials (maybe you're using a read only client?)");
+         }
          Mac mac = Mac.getInstance(HMAC_SHA256);
          SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), HMAC_SHA256);
          mac.init(secretKeySpec);
@@ -40,8 +43,11 @@ public class ClientUtils {
       return D24_AUTHORIZATION_SCHEME + toHexString(hmacSha256);
    }
 
-   public static String buildApiKeySignature(String apiKey) {
-      return BEARER_AUTHORIZATION_SCHEME + apiKey;
+   public static String buildReadOnlySignature(String readOnlyKey) throws Directa24Exception {
+      if (readOnlyKey == null) {
+         throw new Directa24Exception("Missing credentials (maybe you're using a deposit client?)");
+      }
+      return BEARER_AUTHORIZATION_SCHEME + readOnlyKey;
    }
 
    public static String now() {

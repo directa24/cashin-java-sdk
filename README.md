@@ -14,7 +14,7 @@ The official [Directa 24][directa24] Java client library.
 Add this dependency to your project's build file:
 
 ```groovy
-implementation "com.directa24:cashin-java-sdk:1.0.9"
+implementation "com.directa24:cashin-java-sdk:1.0.10"
 ```
 
 ### Maven users
@@ -25,7 +25,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.directa24</groupId>
   <artifactId>cashin-java-sdk</artifactId>
-  <version>1.0.9</version>
+  <version>1.0.10</version>
 </dependency>
 ```
 
@@ -35,16 +35,21 @@ Please see the [Java API docs][api-docs] for the most up-to-date documentation.
 
 ## Usage
 
-#### Credentials
+#### Deposit Credentials
 
 ```java
 String depositKeySbx = "1955f2d";
-String apiKeySbx = "eJ3Ldt6Xma";
 String secretKeySbx = "4lph0ns3";
-int connectTimeout = 30; 
-int readTimeout = 30;
 
-Directa24 directa24Sandbox = new Directa24.Sandbox(depositKeySbx, apiKeySbx, secretKeySbx, connectTimeout, readTimeout);
+Directa24 directa24Sandbox = new Directa24.Sandbox(depositKeySbx, secretKeySbx);
+```
+
+#### Read Only Credentials
+
+```java
+String readOnlyKeySbx = "EgIECaVuyW";
+
+Directa24 directa24Sandbox = new Directa24.Sandbox(readOnlyKeySbx);
 ```
 
 #### Create Deposit
@@ -106,7 +111,7 @@ public class CreateDepositExample {
             .successUrl("https://yoursite.com/deposit/108/confirm")
             .errorUrl("https://yoursite.com/deposit/108/error")
             .notificationUrl("https://yoursite.com/ipn")
-            .logo("")
+            .logo("https://yoursite.com/logo.png")
             .test(true)
             .mobile(false)
             .idempotency("")

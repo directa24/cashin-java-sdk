@@ -24,8 +24,7 @@ public class PaymentMethodsTest extends AbstractDirecta24Test {
    @Before
    public void createMocks() {
       stubFor(get(urlEqualTo("/v3/payment_methods"))
-            .withHeader("X-Login", equalTo(DEPOSIT_KEY))
-            .withHeader("Authorization", equalTo("Bearer " + API_KEY))
+            .withHeader("Authorization", equalTo("Bearer " + READ_ONLY_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse()
                   .withStatus(200)
@@ -37,8 +36,7 @@ public class PaymentMethodsTest extends AbstractDirecta24Test {
                         + "\"status\":\"OK\",\"logo\":\"https://resources.directa24.com/cashin/payment_method/square/VI.svg\"}]")));
 
       stubFor(get(urlEqualTo("/v3/payment_methods?country=BR"))
-            .withHeader("X-Login", equalTo(DEPOSIT_KEY))
-            .withHeader("Authorization", equalTo("Bearer " + API_KEY))
+            .withHeader("Authorization", equalTo("Bearer " + READ_ONLY_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse()
                   .withStatus(200)
@@ -48,8 +46,7 @@ public class PaymentMethodsTest extends AbstractDirecta24Test {
                         + ".com/cashin/payment_method/square/BB.svg\"}]")));
 
       stubFor(get(urlEqualTo("/v3/payment_methods?country=AR"))
-            .withHeader("X-Login", equalTo(DEPOSIT_KEY))
-            .withHeader("Authorization", equalTo("Bearer " + API_KEY))
+            .withHeader("Authorization", equalTo("Bearer " + READ_ONLY_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody("[]")));
    }
@@ -57,7 +54,7 @@ public class PaymentMethodsTest extends AbstractDirecta24Test {
    @Test
    public void allPaymentMethodsTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(READ_ONLY_KEY);
 
       PaymentMethodRequest paymentMethodRequest = PaymentMethodRequest.builder().build();
 
@@ -71,7 +68,7 @@ public class PaymentMethodsTest extends AbstractDirecta24Test {
    @Test
    public void paymentMethodsBRTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(READ_ONLY_KEY);
 
       PaymentMethodRequest paymentMethodRequest = PaymentMethodRequest.builder() //
                                                                       .country("BR") //
@@ -87,7 +84,7 @@ public class PaymentMethodsTest extends AbstractDirecta24Test {
    @Test
    public void emptyPaymentMethodsTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(READ_ONLY_KEY);
 
       PaymentMethodRequest paymentMethodRequest = PaymentMethodRequest.builder() //
                                                                       .country("AR") //

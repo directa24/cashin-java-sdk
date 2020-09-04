@@ -36,7 +36,7 @@ public class CreateRefundTest extends AbstractDirecta24Test {
    @Test
    public void createRefundTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, SECRET_KEY);
 
       BankAccount bankAccount = BankAccount
             .builder()

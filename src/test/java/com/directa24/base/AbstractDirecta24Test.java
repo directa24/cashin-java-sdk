@@ -6,11 +6,11 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 public abstract class AbstractDirecta24Test {
 
-   protected static final String DEPOSIT_KEY = "1955f2d";
+   protected static final String DEPOSIT_KEY = "gFNQnUZXSE";
 
-   protected static final String API_KEY = "eJ3Ldt6Xma";
+   protected static final String SECRET_KEY = "gUfmqFBEGvIemZhzcpkfpBMcHhyoXUxFp";
 
-   protected static final String SECRET_KEY = "4lph0ns3";
+   protected static final String READ_ONLY_KEY = "EgIECaVuyW";
 
    @Rule
    public WireMockRule wireMockRule = new WireMockRule(8089);

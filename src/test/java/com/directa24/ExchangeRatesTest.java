@@ -24,8 +24,7 @@ public class ExchangeRatesTest extends AbstractDirecta24Test {
    @Before
    public void createMocks() {
       stubFor(get(urlEqualTo("/v3/exchange_rates?country=BR"))
-            .withHeader("X-Login", equalTo(DEPOSIT_KEY))
-            .withHeader("Authorization", equalTo("Bearer " + API_KEY))
+            .withHeader("Authorization", equalTo("Bearer " + READ_ONLY_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse()
                   .withStatus(200)
@@ -33,8 +32,7 @@ public class ExchangeRatesTest extends AbstractDirecta24Test {
                   .withBody("{\"fx_rate\":5.4272,\"currency\":\"BRL\",\"converted_amount\":5.4272}")));
 
       stubFor(get(urlEqualTo("/v3/exchange_rates?country=BR&amount=10"))
-            .withHeader("X-Login", equalTo(DEPOSIT_KEY))
-            .withHeader("Authorization", equalTo("Bearer " + API_KEY))
+            .withHeader("Authorization", equalTo("Bearer " + READ_ONLY_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
             .willReturn(aResponse()
                   .withStatus(200)
@@ -45,7 +43,7 @@ public class ExchangeRatesTest extends AbstractDirecta24Test {
    @Test
    public void exchangeRatesBRTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(READ_ONLY_KEY);
 
       ExchangeRateRequest exchangeRatesRequest = ExchangeRateRequest.builder() //
                                                                     .country("BR") //
@@ -61,7 +59,7 @@ public class ExchangeRatesTest extends AbstractDirecta24Test {
    @Test
    public void exchangeRatesAmountBRTest() throws Directa24Exception {
 
-      Directa24 directa24Test = new Directa24.Test(DEPOSIT_KEY, API_KEY, SECRET_KEY);
+      Directa24 directa24Test = new Directa24.Test(READ_ONLY_KEY);
 
       ExchangeRateRequest exchangeRatesRequest = ExchangeRateRequest.builder() //
                                                                     .country("BR") //
