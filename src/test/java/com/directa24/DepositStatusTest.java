@@ -32,8 +32,9 @@ public class DepositStatusTest extends AbstractDirecta24Test {
                   .withStatus(200)
                   .withHeader("Content-Type", "application/json")
                   .withBody("{\"user_id\": \"4-6154733441441686128\",\"deposit_id\": 300000001,"
-                        + "\"invoice_id\": \"4-3368819155598657863\",\"currency\": \"USD\",\"amount\": 100.00,"
-                        + "\"payment_type\": \"BANK_TRANSFER\",\"status\": \"PENDING\"}")));
+                        + "\"invoice_id\": \"4-3368819155598657863\",\"country\": \"BR\",\"currency\": \"USD\",\"usd_amount\": 100.00,"
+                        + "\"local_amount\": 20.00,\"payment_type\": \"BANK_TRANSFER\",\"status\": \"PENDING\",    \"card_detail\": { "
+                        + "\"card_holder\": \"TEST\",\"masked_card\": \"424242******4242\",\"brand\": \"VISA\",\"expiration\": \"2023-12\"}}")));
 
       stubFor(get(urlMatching("/v3/deposits/999999"))
             .withHeader("X-Login", equalTo(DEPOSIT_KEY))
