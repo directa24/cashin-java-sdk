@@ -11,6 +11,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -89,6 +90,7 @@ public class CreateDepositTest extends AbstractDirecta24Test {
             .payer(payer)
             .paymentMethod("BB")
             .paymentType("BANK_TRANSFER")
+            .paymentTypes(Arrays.asList(new String[] { "BANK_TRANSFER", "VOUCHER" }))
             .bankAccount(bankAccount)
             .earlyRelease(false)
             .feeOnPayer(false)
