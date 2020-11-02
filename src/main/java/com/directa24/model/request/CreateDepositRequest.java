@@ -2,6 +2,7 @@ package com.directa24.model.request;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.directa24.model.internal.BankAccount;
 import com.directa24.model.internal.Payer;
@@ -40,6 +41,9 @@ public class CreateDepositRequest implements Serializable {
 
    @JsonProperty
    private String paymentType;
+
+   @JsonProperty
+   private List<String> paymentTypes;
 
    @JsonProperty
    private BankAccount bankAccount;
