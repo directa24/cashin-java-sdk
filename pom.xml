@@ -57,7 +57,7 @@
         <okhttp.version>4.8.1</okhttp.version>
 
         <!-- Test dependencies -->
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
         <wiremock.version>2.26.3</wiremock.version>
     </properties>
 
