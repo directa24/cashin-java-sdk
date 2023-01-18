@@ -24,4 +24,7 @@ public class ExchangeRateResponse implements Serializable {
    @JsonProperty
    private BigDecimal convertedAmount;
 
+   @JsonProperty
+   private BigDecimal fee;
+
 }
