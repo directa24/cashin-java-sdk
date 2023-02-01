@@ -1,9 +1,10 @@
-package com.directa24.model.internal;
+package com.directa24.model.request;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.math.BigDecimal;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.directa24.model.internal.CreditCard;
+import com.directa24.model.internal.Payer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -13,40 +14,39 @@ import lombok.Data;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Payer implements Serializable {
+public class PCIDepositRequest implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
    @JsonProperty
-   private String id;
+   private final String invoiceId;
 
    @JsonProperty
-   private String document;
+   private final BigDecimal amount;
 
    @JsonProperty
-   private String documentType;
+   private final String currency;
 
    @JsonProperty
-   private String email;
+   private final String country;
 
    @JsonProperty
-   private String firstName;
+   private final Payer payer;
 
    @JsonProperty
-   private String lastName;
+   private final String description;
 
    @JsonProperty
-   private Address address;
+   private final String clientIp;
 
    @JsonProperty
-   private String phone;
+   private final String deviceId;
 
    @JsonProperty
-   private LocalDate birthDate;
+   private final boolean feeOnPayer;
 
    @JsonProperty
-   private LocalDate registrationDate;
+   private final CreditCard creditCard;
 
 }

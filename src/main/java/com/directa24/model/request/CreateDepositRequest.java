@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.directa24.model.internal.BankAccount;
+import com.directa24.model.internal.Crypto;
 import com.directa24.model.internal.Payer;
+import com.directa24.model.internal.ReportedInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,6 +51,9 @@ public class CreateDepositRequest implements Serializable {
 
    @JsonProperty
    private BankAccount bankAccount;
+
+   @JsonProperty
+   private ReportedInfo reportedInfo;
 
    @JsonProperty
    private boolean earlyRelease;
@@ -100,6 +105,12 @@ public class CreateDepositRequest implements Serializable {
 
    @JsonProperty
    private boolean mobile;
+
+   @JsonProperty
+   private boolean requestPayerDataOnValidationFailure;
+
+   @JsonProperty
+   private Crypto crypto;
 
    @JsonIgnore
    private String idempotency;
