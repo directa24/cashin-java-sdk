@@ -18,15 +18,6 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <name>Diego Agriel</name>
-            <email>diego.agriel@directa24.com</email>
-            <organization>Directa 24</organization>
-            <organizationUrl>https://directa24.com</organizationUrl>
-        </developer>
-    </developers>
-
     <scm>
         <connection>scm:git:git://github.com/directa24/cashin-java-sdk.git</connection>
         <developerConnection>scm:git:ssh://github.com/directa24/cashin-java-sdk.git</developerConnection>
@@ -48,17 +39,17 @@
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 
-        <lombok-maven-plugin.version>1.18.12.0</lombok-maven-plugin.version>
-        <spotbugs-maven-plugin.version>4.0.4</spotbugs-maven-plugin.version>
+        <lombok-maven-plugin.version>1.18.20.0</lombok-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.7.3.0</spotbugs-maven-plugin.version>
         <checkstyle-maven-plugin.version>3.1.1</checkstyle-maven-plugin.version>
 
-        <lombok.version>1.18.12</lombok.version>
-        <jackson.version>2.11.2</jackson.version>
+        <lombok.version>1.18.24</lombok.version>
+        <jackson.version>2.14.2</jackson.version>
         <okhttp.version>4.8.1</okhttp.version>
 
         <!-- Test dependencies -->
-        <junit.version>4.13</junit.version>
-        <wiremock.version>2.26.3</wiremock.version>
+        <junit.version>4.13.2</junit.version>
+        <wiremock.version>2.27.2</wiremock.version>
     </properties>
 
     <dependencyManagement>
