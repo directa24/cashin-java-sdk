@@ -18,6 +18,15 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>Diego Agriel</name>
+            <email>diego.agriel@directa24.com</email>
+            <organization>Directa 24</organization>
+            <organizationUrl>https://directa24.com</organizationUrl>
+        </developer>
+    </developers>
+
     <scm>
         <connection>scm:git:git://github.com/directa24/cashin-java-sdk.git</connection>
         <developerConnection>scm:git:ssh://github.com/directa24/cashin-java-sdk.git</developerConnection>
