@@ -4,7 +4,7 @@
 
     <groupId>com.directa24</groupId>
     <artifactId>cashin-java-sdk</artifactId>
-    <version>1.0.15-SNAPSHOT</version>
+    <version>1.0.15</version>
     <packaging>jar</packaging>
 
     <name>Directa 24 SDK</name>
@@ -31,7 +31,7 @@
         <connection>scm:git:git://github.com/directa24/cashin-java-sdk.git</connection>
         <developerConnection>scm:git:ssh://github.com/directa24/cashin-java-sdk.git</developerConnection>
         <url>http://github.com/directa24/cashin-java-sdk/tree/master</url>
-        <tag>HEAD</tag>
+        <tag>cashin-java-sdk-1.0.15</tag>
     </scm>
 
     <properties>
