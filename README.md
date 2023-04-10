@@ -14,7 +14,7 @@ The official [Directa 24][directa24] Java client library.
 Add this dependency to your project's build file:
 
 ```groovy
-implementation "com.directa24:cashin-java-sdk:1.0.13"
+implementation "com.directa24:cashin-java-sdk:1.0.15"
 ```
 
 ### Maven users
@@ -25,7 +25,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.directa24</groupId>
   <artifactId>cashin-java-sdk</artifactId>
-  <version>1.0.13</version>
+  <version>1.0.15</version>
 </dependency>
 ```
 
@@ -37,9 +37,11 @@ Please see the [Java API docs][api-docs] for the most up-to-date documentation.
 
 #### Deposit Credentials
 
+Instructions on how to get your keys by clicking [here](https://docs.directa24.com/api-documentation/deposits-api/technical-and-security-aspects#api-keys)  
+
 ```java
-String depositKeySbx = "1955f2d";
-String secretKeySbx = "4lph0ns3";
+String depositKeySbx = ${apiKey};
+String secretKeySbx = ${apiSignature};
 
 Directa24 directa24Sandbox = new Directa24.Sandbox(depositKeySbx, secretKeySbx);
 ```
@@ -47,7 +49,7 @@ Directa24 directa24Sandbox = new Directa24.Sandbox(depositKeySbx, secretKeySbx);
 #### Read Only Credentials
 
 ```java
-String readOnlyKeySbx = "EgIECaVuyW";
+String readOnlyKeySbx = ${readOnlyApiKey};
 
 Directa24 directa24Sandbox = new Directa24.Sandbox(readOnlyKeySbx);
 ```
@@ -70,21 +72,21 @@ public class CreateDepositExample {
             .builder()
             .id("4-9934519")
             .address(address)
-            .document("21329039050")
+            .document("14057025162")
             .documentType("CPF")
-            .email("juanCarlos@hotmail.com")
-            .firstName("Ricardo")
-            .lastName("Carlos")
-            .phone("+598 99730878")
+            .email("john.smith@example.com")
+            .firstName("John")
+            .lastName("Smith")
+            .phone("+551199999999")
             .build();
 
       BankAccount bankAccount = BankAccount
             .builder()
             .bankCode("01")
-            .accountNumber("3242342")
+            .accountNumber("9999999")
             .accountType("SAVING")
-            .beneficiary("Ricardo Carlos")
-            .branch("12")
+            .beneficiary("John Smith")
+            .branch("99")
             .build();
 
       CreateDepositRequest createDepositRequest = CreateDepositRequest
