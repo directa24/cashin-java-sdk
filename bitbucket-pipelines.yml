@@ -6,7 +6,6 @@ clone:
 
 definitions: 
   steps:
-
     - nexus-template: &nexus-template        
         image: atlassian/default-image:3
         name: Get setting.xml template for compile
