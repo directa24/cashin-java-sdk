@@ -8,6 +8,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
@@ -29,7 +31,7 @@ public class CreateRefundTest extends AbstractDirecta24Test {
       stubFor(post(urlMatching("/v3/refunds"))
             .withHeader("X-Login", equalTo(DEPOSIT_KEY))
             .withHeader("Content-Type", equalTo("application/json"))
-            .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody("{\"refund_id\": 1000043\n}")));
+            .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBodyFile("create_refund_response.json")));
 
    }
 
@@ -61,7 +63,8 @@ public class CreateRefundTest extends AbstractDirecta24Test {
       CreateRefundResponse createRefundResponse = directa24Test.client.createRefund(createRefundRequest);
 
       assertTrue(createRefundResponse != null && createRefundResponse.getRefundId() != null);
-
+      assertNotNull(createRefundResponse.getRefundInfo());
+      assertEquals(createRefundResponse.getRefundInfo().getResult(), "SUCCESS");
       verify(postRequestedFor(urlEqualTo("/v3/refunds")).withHeader("Content-Type", equalTo("application/json")));
    }
 

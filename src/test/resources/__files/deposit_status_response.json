@@ -1,0 +1,36 @@
+{
+  "user_id": "4-6154733441441686128",
+  "deposit_id": 300000001,
+  "invoice_id": "4-3368819155598657863",
+  "country": "BR",
+  "currency": "USD",
+  "usd_amount": 100.00,
+  "local_amount": 20.00,
+  "payment_type": "BANK_TRANSFER",
+  "status": "PENDING",
+  "card_detail": {
+    "card_holder": "TEST",
+    "masked_card": "424242******4242",
+    "brand": "VISA",
+    "expiration": "2023-12"
+  },
+  "payer": {
+    "document": "1234567",
+    "document_type": "DNI",
+    "email": "test@test.local",
+    "first_name": "Test",
+    "last_name": "Test",
+    "address": {
+      "street": "742 Evergreen Terrace",
+      "city": "Springfield",
+      "state": "Test",
+      "zip_code": "1234"
+    }
+  },
+  "crypto": {
+    "currency": "BTC",
+    "wallet": "3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZb5",
+    "crypto_fx": 100.123,
+    "network": "test"
+  }
+}
