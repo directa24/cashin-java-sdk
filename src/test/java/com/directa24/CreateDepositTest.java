@@ -110,6 +110,7 @@ public class CreateDepositTest extends AbstractDirecta24Test {
             .test(true)
             .mobile(false)
             .idempotency("")
+            .allowInstallments(false)
             .build();
 
       CreateDepositResponse createDepositResponse = directa24Test.client.createDeposit(createDepositRequest);

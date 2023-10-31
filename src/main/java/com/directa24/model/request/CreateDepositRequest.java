@@ -115,4 +115,10 @@ public class CreateDepositRequest implements Serializable {
    @JsonIgnore
    private String idempotency;
 
+   @JsonProperty
+   private boolean allowInstallments;
+
+   @JsonProperty
+   private Integer expiration;
+
 }
